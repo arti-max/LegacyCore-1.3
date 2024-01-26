@@ -30,7 +30,7 @@ if(!is_numeric($levelID)){
 
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM downloads WHERE levelID=:levelID ");
-		$query6->execute([':levelID' => $levelID);
+		$query6->execute([':levelID' => $levelID]);
 		if($inc && $query6->fetchColumn() < 2){
 			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
@@ -48,7 +48,7 @@ if(!is_numeric($levelID)){
 		}else{
 			$levelstring = $result["levelString"];
 		}
-		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["difficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":19:".$result["isFeatured"].":15:".$result["levelLength"].":28:".$uploadDate";
+		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["difficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":19:".$result["isFeatured"].":15:".$result["levelLength"].":28:$uploadDate";
 		echo $response;
 	}else{
 		echo -1;
