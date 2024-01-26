@@ -130,7 +130,7 @@ switch($type){
 		break;
 	case 6: //featured
 		$params[] = "NOT isFeatured = 0";
-		$order = "F_POS DESC, 0";
+		$order = "F_POS";
 		break;
 }
 //ACTUAL QUERY EXECUTION
