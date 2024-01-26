@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-include dirname(__FILE__)."/../../config/connection.php";
+include dirname(__FILE__)."/../../cfg/cfg.php";
 @header('Content-Type: text/html; charset=utf-8');
 if(!isset($port))
 	$port = 3306;
