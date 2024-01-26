@@ -22,8 +22,14 @@ $levelString = $_POST["levelString"];
 
 $id = $gs->getIDFromPost();
 $userID = $Lib->getUserID($id, $userName);
-$query = $db->prepare("INSERT INTO levels (levelName, levelDesc, userName, levelVersion, gameVersion, audioTrack, levelLength, userID, secret, levelString, udid)
-VALUES (:levelName, :levelDesc, :userName, :levelVersion, :gameVersion, :audioTrack, :levelLength, :userID, :secret, :levelString, :udid)");
+$uploadDate = time();
+$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID)");
+$query->execute([':time' => $uploadDate - 60, ':userID' => $userID]);
+if($query->fetchColumn() > 0){
+	exit("-1");
+}
+$query = $db->prepare("INSERT INTO levels (levelName, levelDesc, userName, levelVersion, gameVersion, audioTrack, levelLength, userID, secret, levelString, udid, uploadDate)
+VALUES (:levelName, :levelDesc, :userName, :levelVersion, :gameVersion, :audioTrack, :levelLength, :userID, :secret, :levelString, :udid, :uploadDate)");
 
 
 if($levelString != "" AND $levelName != ""){
@@ -32,12 +38,12 @@ if($levelString != "" AND $levelName != ""){
 	$levelID = $querye->fetchColumn();
 	$lvls = $querye->rowCount();
 	if($lvls==1){
-		$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, levelString=:levelString, secret=:secret, updateDate=:uploadDate WHERE levelName=:levelName AND udid=:udid");	
-		$query->execute([':levelName' => $levelName, ':levelDesc' => $levelDesc, ':userName' => $userName, ':levelVersion' => $levelVersion, ':gameVersion' => $gameVersion, ':audioTrack' => $audioTrack, ':levelLength' => $levelLength, ':userID' => $userID, ':secret' => $secret, ':levelString' => "", ':udid' => $id]);
+		$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, levelString=:levelString, secret=:secret WHERE levelName=:levelName AND udid=:udid");	
+		$query->execute([':levelName' => $levelName, ':levelDesc' => $levelDesc, ':userName' => $userName, ':levelVersion' => $levelVersion, ':gameVersion' => $gameVersion, ':audioTrack' => $audioTrack, ':levelLength' => $levelLength, ':userID' => $userID, ':secret' => $secret, ':levelString' => "", ':udid' => $id, ':uploadDate' => $uploadDate - 60]);
 		file_put_contents("../../data/$levelID",$levelString);
 		echo $levelID;
 	}else{
-		$query->execute([':levelName' => $levelName, ':levelDesc' => $levelDesc, ':userName' => $userName, ':levelVersion' => $levelVersion, ':gameVersion' => $gameVersion, ':audioTrack' => $audioTrack, ':levelLength' => $levelLength, ':userID' => $userID, ':secret' => $secret, ':levelString' => "", ':udid' => $id]);
+		$query->execute([':levelName' => $levelName, ':levelDesc' => $levelDesc, ':userName' => $userName, ':levelVersion' => $levelVersion, ':gameVersion' => $gameVersion, ':audioTrack' => $audioTrack, ':levelLength' => $levelLength, ':userID' => $userID, ':secret' => $secret, ':levelString' => "", ':udid' => $id, ':uploadDate' => $uploadDate - 60]);
 		$levelID = $db->lastInsertId();
 		file_put_contents("../../data/$levelID",$levelString);
 		echo $levelID;
