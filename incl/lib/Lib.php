@@ -30,6 +30,15 @@ class Lib {
 		}
 		return $userID;
 	}
+
+	public function getUserString($userdata) {
+		include __DIR__ . "/connection.php";
+		/*$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
+		$query->execute([':id' => $userID]);
+		$userdata = $query->fetch();*/
+		$udid = is_numeric($userdata['udid']) ? $userdata['udid'] : 0;
+		return "${userdata['userID']}:${userdata['userName']}:${udid}";
+	}
   
 }
 
