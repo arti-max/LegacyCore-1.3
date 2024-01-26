@@ -7,7 +7,7 @@ $gs = new Lib();
 if(!isset($_POST['levelID']))
 	exit(-1);
 
-$levelID = $_POST['levelID']);
+$levelID = $_POST['levelID'];
 
 $query=$db->prepare("SELECT likes FROM levels WHERE $levelID = :levelID LIMIT 1");
 $query->execute([':levelID' => $levelID]);
