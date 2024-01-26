@@ -2,9 +2,9 @@
 //error_reporting(0);
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
-require_once "../lib/mainLib.php";
+require_once "../lib/Lib.php";
 $Lib = new Lib();
-require_once "../lib/mainLib.php";
+require_once "../lib/Lib.php";
 $gs = new Lib();
 //here im getting all the data
 
