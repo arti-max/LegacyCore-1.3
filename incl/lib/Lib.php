@@ -1,6 +1,6 @@
 <?php
 
-class mainLib {
+class Lib {
   public function getIDFromPost(){
 
 		if(!empty($_POST["udid"])) 
@@ -17,11 +17,6 @@ class mainLib {
 
   public function getUserID($udid, $userName = "Undefined") {
 		include __DIR__ . "/connection.php";
-		if(is_numeric($udid)){
-			$register = 1;
-		}else{
-			$register = 0;
-		}
 		$query = $db->prepare("SELECT userID FROM users WHERE udid LIKE BINARY :id");
 		$query->execute([':id' => $udid]);
 		if ($query->rowCount() > 0) {
