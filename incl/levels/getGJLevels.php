@@ -26,7 +26,7 @@ if(!empty($_POST["type"])){
 	$type = 0;
 }
 if(!empty($_POST["diff"])){
-	$diff = ($_POST["diff"];
+	$diff = $_POST["diff"];
 }else{
 	$diff = "-";
 }
@@ -53,7 +53,7 @@ if($len != "-" AND !empty($len)){
 //DIFFICULTY FILTERS
 switch($diff){
 	case -1:
-		$params[] = "starDifficulty = '0'";
+		$params[] = "difficulty = '0'";
 		break;
 	case -2:
 		if(!empty($_POST["demonFilter"])){
@@ -87,12 +87,11 @@ switch($diff){
 	default:
 		if($diff){
 			$diff = str_replace(",", "0,", $diff) . "0";
-			$params[] = "starDifficulty IN ($diff)";
+			$params[] = "difficulty IN ($diff)";
 		}
 		break;
 }
-//TYPE DETECTION
-//TODO: the 2 non-friend types that send GJP in 2.11
+
 if(!empty($_POST["str"])){
 	$str = $_POST["str"];
 }
@@ -123,14 +122,15 @@ switch($type){
 		$params[] = "uploadDate > $uploadDate ";
 		$order = "likes";
 		break;
-  case 4:
-    $order = "levelID DESC"
+  	case 4:
+    	$order = "levelID";
+		break;
 	case 5:
 		$params[] = "levels.userID = '$str'";
 		break;
 	case 6: //featured
 		$params[] = "NOT isFeatured = 0";
-		$order = "F_POS DESC";
+		$order = "F_POS DESC, 0";
 		break;
 }
 //ACTUAL QUERY EXECUTION
@@ -160,7 +160,7 @@ foreach($result as &$level1) {
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
-		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["Difficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":19:".$level1["isFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"]."|";
+		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["difficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":19:".$level1["isFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"]."|";
 		$userstring .= $gs->getUserString($level1)."|";
 	}
 }
