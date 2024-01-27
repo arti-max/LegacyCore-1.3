@@ -1,4 +1,6 @@
 <?php
+chdir(dirname(__FILE__));
+include "../lib/connection.php";
 require_once "../lib/Lib.php";
 $Lib = new Lib();
 
@@ -6,8 +8,9 @@ $udid = $_POST["udid"];
 $userName = $_POST["userName"];
 $secret = $_POST["secret"];
 
-$userID = $Lib->getUserID($udid, $userName);
+$query = db->prepare("UPDATE users SET userName=:userName WHERE udid=:udid");
+$query->execute([':userName' => $userName, ':udid' => $udid]);
 
-echo $userID;
+echo $userName;
 
 ?>
