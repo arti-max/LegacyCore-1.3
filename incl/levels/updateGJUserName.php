@@ -1,4 +1,6 @@
 <?php
+require_once "../lib/Lib.php";
+$Lib = new Lib();
 
 $udid = $_POST["udid"];
 $userName = $_POST["userName"];
