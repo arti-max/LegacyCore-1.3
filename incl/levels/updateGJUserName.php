@@ -8,7 +8,7 @@ $udid = $_POST["udid"];
 $userName = $_POST["userName"];
 $secret = $_POST["secret"];
 
-$query = db->prepare("UPDATE users SET userName=:userName WHERE udid=:udid");
+$query = $db->prepare("UPDATE users SET userName=:userName WHERE udid=:udid");
 $query->execute([':userName' => $userName, ':udid' => $udid]);
 
 echo $userName;
