@@ -9,12 +9,18 @@ if(!isset($_POST['levelID']))
 
 $levelID = $_POST['levelID'];
 
+$query = $db->prepare("SELECT count(*) FROM likes WHERE levelID=:levelID");
+$query->execute([':levelID' => $levelID]);
+if($query->fetchColumn() > 2)
+	exit("-1");
+
+$query = $db->prepare("INSERT INTO likes (levelID) VALUES (:levelID)");
+$query->execute([':levelID' => $levelID]);
+
 $query=$db->prepare("SELECT likes FROM levels WHERE $levelID = :levelID LIMIT 1");
 $query->execute([':levelID' => $levelID]);
 $likes = $query->fetchColumn();
 
-if($query->fetchColumn() > 2)
-	exit("-1");
 
 $query=$db->prepare("UPDATE levels SET likes = likes + 1 WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
