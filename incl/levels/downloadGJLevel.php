@@ -29,14 +29,11 @@ if(!is_numeric($levelID)){
 		//Verifying friends only unlisted
 
 		//adding the download
-		$query6 = $db->prepare("SELECT count(*) FROM downloads WHERE levelID=:levelID ");
+		$query6 = $db->prepare("INSERT INTO downloads (levelID) VALUES (:levelID)");
 		$query6->execute([':levelID' => $levelID]);
-		if($query6->fetchColumn() < 2){
-			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
-			$query2->execute([':levelID' => $levelID]);
-			$query6 = $db->prepare("INSERT INTO downloads (levelID) VALUES (:levelID)");
-			$query6->execute([':levelID' => $levelID]);
-		}
+		
+		$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
+		$query2->execute([':levelID' => $levelID]);
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
 		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
 		//password xor
