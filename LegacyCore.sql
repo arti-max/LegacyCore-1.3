@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Янв 26 2024 г., 23:10
+-- Время создания: Янв 28 2024 г., 22:04
 -- Версия сервера: 8.0.35-0ubuntu0.20.04.1
 -- Версия PHP: 7.4.3-4ubuntu2.19
 
@@ -84,6 +84,18 @@ CREATE TABLE `levels` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `likes`
+--
+
+CREATE TABLE `likes` (
+  `id` int NOT NULL,
+  `levelID` int NOT NULL,
+  `uploadDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `users`
 --
 
@@ -122,6 +134,12 @@ ALTER TABLE `levels`
   ADD PRIMARY KEY (`levelID`);
 
 --
+-- Индексы таблицы `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -135,13 +153,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `downloads`
 --
 ALTER TABLE `downloads`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `levels`
@@ -150,10 +168,16 @@ ALTER TABLE `levels`
   MODIFY `levelID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
+-- AUTO_INCREMENT для таблицы `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `userID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
