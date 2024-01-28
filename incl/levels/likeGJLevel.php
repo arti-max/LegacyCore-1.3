@@ -13,6 +13,8 @@ $query=$db->prepare("SELECT likes FROM levels WHERE $levelID = :levelID LIMIT 1"
 $query->execute([':levelID' => $levelID]);
 $likes = $query->fetchColumn();
 
+if($query->fetchColumn() > 2)
+	exit("-1");
 
 $query=$db->prepare("UPDATE levels SET likes = likes + 1 WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
