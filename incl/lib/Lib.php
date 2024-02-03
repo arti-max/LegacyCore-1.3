@@ -39,6 +39,20 @@ class Lib {
 		$udid = is_numeric($userdata['udid']) ? $userdata['udid'] : 0;
 		return "${userdata['userID']}:${userdata['userName']}:${udid}";
 	}
+
+	public function checkPermission($udid){
+
+		include __DIR__ . "/connection.php";
+		//isAdmin check
+		$query = $db->prepare("SELECT isAdmin FROM users WHERE udid = :udid");
+		$query->execute([':udid' => $udid]);
+		$isAdmin = $query->fetchColumn();
+		if($isAdmin == 1){
+			return true;
+		} else {
+			return false;
+		}
+	}
   
 }
 
