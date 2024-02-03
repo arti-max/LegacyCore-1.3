@@ -8,16 +8,26 @@ require_once "../lib/Lib.php";
 $gs = new Lib();
 //here im getting all the data
 
-$gameVersion = $_POST["gameVersion"];
-$userName = $_POST["userName"];
-$levelID = $_POST["levelID"];
-$levelName = $_POST["levelName"];
-$levelDesc = $_POST["levelDesc"];
-$levelVersion = $_POST["levelVersion"];
-$levelLength = $_POST["levelLength"];
-$audioTrack = $_POST["audioTrack"];
-$secret = $_POST["secret"];
-$levelString = $_POST["levelString"];
+$gameVersion = ExplotPatch::remove($_POST["gameVersion"]);
+$userName = ExplotPatch::remove($_POST["userName"]);
+$levelID = ExplotPatch::remove($_POST["levelID"]);
+$levelName = ExplotPatch::remove($_POST["levelName"]);
+$levelDesc = ExplotPatch::remove($_POST["levelDesc"]);
+$levelVersion = ExplotPatch::remove($_POST["levelVersion"]);
+$levelLength = ExplotPatch::remove($_POST["levelLength"]);
+$audioTrack = ExplotPatch::remove($_POST["audioTrack"]);
+$secret = ExplotPatch::remove($_POST["secret"]);
+$levelString = ExplotPatch::remove($_POST["levelString"]);
+
+$levelName = str_replace("?", "", $levelName);
+$levelName = str_replace("}", "", $levelName);
+$levelName = str_replace("{", "", $levelName);
+$levelName = str_replace(")", "", $levelName);
+$levelName = str_replace("(", "", $levelName);
+$levelName = str_replace("/", "", $levelName);
+$levelName = str_replace(".", "", $levelName);
+$levelName = str_replace(":", "", $levelName);
+$levelName = str_replace(";", "", $levelName);
 
 
 $id = $gs->getIDFromPost();
@@ -39,7 +49,7 @@ if($levelString != "" AND $levelName != ""){
 	$lvls = $querye->rowCount();
 	if($lvls==1){
 		$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, levelString=:levelString, secret=:secret WHERE levelName=:levelName AND udid=:udid");	
-		$query->execute([':levelName' => $levelName, ':levelDesc' => $levelDesc, ':userName' => $userName, ':levelVersion' => $levelVersion, ':gameVersion' => $gameVersion, ':audioTrack' => $audioTrack, ':levelLength' => $levelLength, ':userID' => $userID, ':secret' => $secret, ':levelString' => "", ':udid' => $id, ':uploadDate' => $uploadDate - 60]);
+		$query->execute([':levelName' => $levelName, ':levelDesc' => $levelDesc, ':userName' => $userName, ':levelVersion' => $levelVersion, ':gameVersion' => $gameVersion, ':audioTrack' => $audioTrack, ':levelLength' => $levelLength, ':userID' => $userID, ':secret' => $secret, ':levelString' => "", ':udid' => $id]);
 		file_put_contents("../../data/$levelID",$levelString);
 		echo $levelID;
 	}else{
