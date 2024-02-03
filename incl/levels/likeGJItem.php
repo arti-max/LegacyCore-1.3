@@ -1,13 +1,14 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
+require_once "../lib/exploitPatch.php";
 require_once "../lib/Lib.php";
 $gs = new Lib();
 
 if(!isset($_POST['itemID']))
 	exit(-1);
 
-$levelID = $_POST['itemID'];
+$levelID = ExploitPatch::remove($_POST['itemID']);
 $type = $_POST["type"];
 $isLike = $_POST["like"];
 
