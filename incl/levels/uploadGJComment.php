@@ -1,15 +1,16 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
+require_once "../lib/exploitPatch.php";
 require_once "../lib/Lib.php";
 require_once "../lib/commands.php";
 
 $Lib = new Lib();
 
 
-$userName = $_POST["userName"];
-$levelID = $_POST["levelID"];
-$comment = $_POST["comment"];
+$userName = ExploitPatch::remove($_POST["userName"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
+$comment = ExploitPatch::remove($_POST["comment"]);
 
 $udid = $Lib->getIDFromPost();
 
