@@ -41,46 +41,15 @@ if($gameVersion==0){
 if(!empty($_POST["featured"]) AND $_POST["featured"]==1){
 	$params[] = "isFeatured = 1";
 }
-if(!empty($_POST["len"])){
-	$len = $_POST["len"];
-}else{
-	$len = "-";
-}
-if($len != "-" AND !empty($len)){
-	$params[] = "levelLength IN ($len)";
-}
+
+$len = $_POST["len"];
+$params[] = "levelLength IN ($len)";
+
 
 //DIFFICULTY FILTERS
 switch($diff){
 	case -1:
 		$params[] = "difficulty = '0'";
-		break;
-	case -2:
-		if(!empty($_POST["demonFilter"])){
-			$demonFilter = $_POST["demonFilter"];
-		}else{
-			$demonFilter = 0;
-		}
-		$params[] = "starDemon = 1";
-		switch($demonFilter){
-			case 1:
-				$params[] = "starDemonDiff = '3'";
-				break;
-			case 2:
-				$params[] = "starDemonDiff = '4'";
-				break;
-			case 3:
-				$params[] = "starDemonDiff = '0'";
-				break;
-			case 4:
-				$params[] = "starDemonDiff = '5'";
-				break;
-			case 5:
-				$params[] = "starDemonDiff = '6'";
-				break;
-			default:
-				break;
-		}
 		break;
 	case "-";
 		break;
