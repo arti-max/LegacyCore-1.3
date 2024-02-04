@@ -41,9 +41,13 @@ if($gameVersion==0){
 if(!empty($_POST["featured"]) AND $_POST["featured"]==1){
 	$params[] = "isFeatured = 1";
 }
+if ($_POST["len"] != "-") {
+	$len = $_POST["len"];
+	$params[] = "levelLength IN ($len)";
+} else {
+	$len = "-";
+}
 
-$len = $_POST["len"];
-$params[] = "levelLength IN ($len)";
 
 
 //DIFFICULTY FILTERS
