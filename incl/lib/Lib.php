@@ -6,7 +6,6 @@ class Lib {
 		if(!empty($_POST["udid"])) 
 		{
 			$id = $_POST["udid"];
-			if(is_numeric($id)) exit("-1");
 		}
 		else
 		{
@@ -22,8 +21,7 @@ class Lib {
 		if ($query->rowCount() > 0) {
 			$userID = $query->fetchColumn();
 		} else {
-			$query = $db->prepare("INSERT INTO users (udid, userName)
-			VALUES (:id, :userName)");
+			$query = $db->prepare("INSERT INTO users (udid, userName) VALUES (:id, :userName)");
 
 			$query->execute([':id' => $udid, ':userName' => $userName]);
 			$userID = $db->lastInsertId();
@@ -33,26 +31,11 @@ class Lib {
 
 	public function getUserString($userdata) {
 		include __DIR__ . "/connection.php";
-		/*$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
-		$query->execute([':id' => $userID]);
-		$userdata = $query->fetch();*/
 		$udid = is_numeric($userdata['udid']) ? $userdata['udid'] : 0;
 		return "${userdata['userID']}:${userdata['userName']}:${udid}";
 	}
+	
 
-	public function checkPermission($udid){
-
-		include __DIR__ . "/connection.php";
-		//isAdmin check
-		$query = $db->prepare("SELECT isAdmin FROM users WHERE udid = :udid");
-		$query->execute([':udid' => $udid]);
-		$isAdmin = $query->fetchColumn();
-		if($isAdmin == 1){
-			return true;
-		} else {
-			return false;
-		}
-	}
   
 }
 
