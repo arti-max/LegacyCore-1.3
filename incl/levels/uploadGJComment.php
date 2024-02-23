@@ -1,23 +1,23 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
-require_once "../lib/exploitPatch.php";
 require_once "../lib/Lib.php";
 require_once "../lib/commands.php";
+$lib = new Lib();
 
-$Lib = new Lib();
 
 
-$userName = ExploitPatch::remove($_POST["userName"]);
-$levelID = ExploitPatch::remove($_POST["levelID"]);
-$comment = ExploitPatch::remove($_POST["comment"]);
+$userName = $_POST["userName"];
+$levelID = $_POST["levelID"];
+$comment = $_POST["comment"];
 
-$udid = $Lib->getIDFromPost();
+$udid = $lib->getIDFromPost();
 
-$userID = $Lib->getUserID($udid, $userName);
+$userID = $lib->getUserID($udid, $userName);
 $uploadDate = time();
 
-if(Commands::Commands($udid, $comment, $levelID)){
+
+if(Commands::doCommands($userID, $comment, $levelID) == true){
 	exit("-1");
 }
 
@@ -28,4 +28,5 @@ if($udid != "" AND $comment != ""){
 } else {
     echo "-1";
 }
+
 ?>
