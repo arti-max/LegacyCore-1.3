@@ -17,7 +17,7 @@ $userID = $lib->getUserID($udid, $userName);
 $uploadDate = time();
 
 
-if(Commands::doCommands($userID, $comment, $levelID) == true){
+if(Commands::doCommands($udid, $comment, $levelID) == true){
 	exit("-1");
 }
 
