@@ -6,8 +6,7 @@ require_once "../lib/Lib.php";
 $gs = new Lib();
 
 
-//initializing variables
-$lvlstring = ""; $userstring = ""; $lvlsmultistring = []; $str = "";
+$lvlstring = ""; $userstring = ""; $lvlsmultistring = []; $str = ""; $order = "";
 $orderenabled = true;
 $morejoins = "";
 
@@ -31,7 +30,6 @@ if(!empty($_POST["diff"])){
 	$diff = "-";
 }
 
-
 //ADDITIONAL PARAMETERS
 if($gameVersion==0){
 	$params[] = "levels.gameVersion <= 18";
@@ -47,6 +45,10 @@ if ($_POST["len"] != "-") {
 } else {
 	$len = "-";
 }
+$isStar = $_POST["star"];
+if($isStar == 1){
+	$params[] = "NOT isStars = 0";
+}
 
 
 
@@ -55,12 +57,15 @@ switch($diff){
 	case -1:
 		$params[] = "difficulty = '0'";
 		break;
+	case -2:
+		$params[] = "isDemon = 1";
+		break;
 	case "-";
 		break;
 	default:
 		if($diff){
 			$diff = str_replace(",", "0,", $diff) . "0";
-			$params[] = "difficulty IN ($diff)";
+			$params[] = "difficulty IN ($diff) AND isDemon = '0";
 		}
 		break;
 }
@@ -130,10 +135,7 @@ $levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
 		$lvlsmultistring[] = ["levelID" => $level1["levelID"]];
-		if(!empty($gauntlet)){
-			$lvlstring .= "44:$gauntlet:";
-		}
-		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["difficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":19:".$level1["isFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"]."|";
+		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["difficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":19:".$level1["isFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":17:".$level1["isDemon"].":18:".$level1["isStars"]."|";
 		$userstring .= $gs->getUserString($level1)."|";
 	}
 }
