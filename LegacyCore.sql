@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Фев 03 2024 г., 22:50
+-- Время создания: Фев 28 2024 г., 21:51
 -- Версия сервера: 8.0.36-0ubuntu0.20.04.1
 -- Версия PHP: 7.4.3-4ubuntu2.19
 
@@ -58,6 +58,10 @@ CREATE TABLE `comments` (
   `comment` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `comments`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -69,6 +73,10 @@ CREATE TABLE `downloads` (
   `levelID` int NOT NULL,
   `uploadDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `downloads`
+--
 
 -- --------------------------------------------------------
 
@@ -95,8 +103,14 @@ CREATE TABLE `levels` (
   `F_POS` int NOT NULL DEFAULT '0',
   `difficulty` int NOT NULL DEFAULT '0',
   `uploadDate` bigint NOT NULL,
-  `diffOverride` int DEFAULT '0'
+  `diffOverride` int DEFAULT '0',
+  `isStars` int NOT NULL DEFAULT '0',
+  `isDemon` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `levels`
+--
 
 -- --------------------------------------------------------
 
@@ -112,6 +126,10 @@ CREATE TABLE `likes` (
   `isLike` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `likes`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -124,8 +142,19 @@ CREATE TABLE `users` (
   `userName` varchar(69) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'undefined',
   `IP` varchar(69) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '127.0.0.1',
   `secret` varchar(69) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none',
-  `isAdmin` int NOT NULL DEFAULT '0'
+  `isAdmin` int NOT NULL DEFAULT '0',
+  `stars` int NOT NULL DEFAULT '0',
+  `cp` int NOT NULL DEFAULT '0',
+  `demons` int NOT NULL DEFAULT '0',
+  `icon` int NOT NULL DEFAULT '0',
+  `ship` int NOT NULL DEFAULT '0',
+  `color1` int NOT NULL DEFAULT '0',
+  `color2` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `users`
+--
 
 --
 -- Индексы сохранённых таблиц
@@ -179,37 +208,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
+  MODIFY `commentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT для таблицы `downloads`
 --
 ALTER TABLE `downloads`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT для таблицы `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `levelID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT для таблицы `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
+  MODIFY `userID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
