@@ -2,23 +2,22 @@
 //error_reporting(0);
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
-require_once "../lib/exploitPatch.php";
 require_once "../lib/Lib.php";
 $Lib = new Lib();
 require_once "../lib/Lib.php";
 $gs = new Lib();
-//here im getting all the data
 
-$gameVersion = ExplotPatch::remove($_POST["gameVersion"]);
-$userName = ExplotPatch::remove($_POST["userName"]);
-$levelID = ExplotPatch::remove($_POST["levelID"]);
-$levelName = ExplotPatch::remove($_POST["levelName"]);
-$levelDesc = ExplotPatch::remove($_POST["levelDesc"]);
-$levelVersion = ExplotPatch::remove($_POST["levelVersion"]);
-$levelLength = ExplotPatch::remove($_POST["levelLength"]);
-$audioTrack = ExplotPatch::remove($_POST["audioTrack"]);
-$secret = ExplotPatch::remove($_POST["secret"]);
-$levelString = ExplotPatch::remove($_POST["levelString"]);
+
+$gameVersion = $_POST["gameVersion"];
+$userName = $_POST["userName"];
+$levelID = $_POST["levelID"];
+$levelName = $_POST["levelName"];
+$levelDesc = $_POST["levelDesc"];
+$levelVersion = $_POST["levelVersion"];
+$levelLength = $_POST["levelLength"];
+$audioTrack = $_POST["audioTrack"];
+$secret = $_POST["secret"];
+$levelString = $_POST["levelString"];
 
 $levelName = str_replace("?", "", $levelName);
 $levelName = str_replace("}", "", $levelName);
