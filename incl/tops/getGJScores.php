@@ -1,5 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
+//error_reporting(1);
 include "../lib/connection.php";
 $stars = 0;
 $count = 0;
@@ -26,11 +27,25 @@ if ($type != "") {
         $query->execute([':stars' => $stars]);
     }
     $result = $query->fetchAll();
+	/*if($type == "relative"){
+		$user = $result[0];
+		$udid = $user["udid"];
+		$e = "SET @row := 0;";
+		$query = $db->prepare($e);
+		$query->execute();
+		$f = "SELECT rank, stars FROM (SELECT @rown := @row + 1 AS rank, stars, udid FROM users ORDER BY stars DESC) as result WHERE udid=:udid";
+		$query = $db->prepare($f);
+		$query->execute([':udid' => $udid]);
+		$leaderboard = $query->fetchAll();
+		//var_dump($leaderboard);
+		$leaderboard = $leaderboard[0];
+		$xx = $leaderboard["rank"] - 1;
+	}*/
 	foreach($result as &$user) {
 		$udid = 0;
 		$udid = $user["udid"];
 		$xx++;
-        $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":6:".$xx.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$udid.":14:".$user["ship"]."|";
+        $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":6:".$xx.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$udid.":12:".$user["ship"]."|";
     }
 }
 
