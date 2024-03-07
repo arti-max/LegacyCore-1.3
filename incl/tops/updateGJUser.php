@@ -24,8 +24,8 @@ $query->execute([':userID' => $userID]);
 $old = $query->fetch();
 
 
-$query = $db->prepare("UPDATE users SET userName=:userName, stars=:stars, demons=:demons, icon=:icon, color1=:color1, color2=:color2 WHERE userID=:userID");
-$query->execute([':stars' => $stars, ':demons' => $demons, ':icon' => $icon, ':color1' => $color1, ':color2' => $color2, ':userName' => $userName, ':userID' => $userID]);
+$query = $db->prepare("UPDATE users SET userName=:userName, stars=:stars, demons=:demons, icon=:icon, color1=:color1, color2=:color2, ship=:ship WHERE userID=:userID");
+$query->execute([':stars' => $stars, ':demons' => $demons, ':icon' => $icon, ':color1' => $color1, ':color2' => $color2, ':userName' => $userName, ':userID' => $userID, ':ship' => $ship]);
 
 echo $userID;
 ?>
