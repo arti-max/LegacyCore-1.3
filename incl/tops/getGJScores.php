@@ -28,9 +28,7 @@ if ($type != "") {
     $result = $query->fetchAll();
 	foreach($result as &$user) {
 		$udid = 0;
-		if(is_numeric($user["udid"])){
-			$udid = $user["udid"];
-		}
+		$udid = $user["udid"];
 		$xx++;
         $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":6:".$xx.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$udid.":14:".$user["ship"]."|";
     }
