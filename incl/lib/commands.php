@@ -25,7 +25,7 @@ class Commands {
 
         $query = $db->prepare("SELECT udid FROM levels WHERE levelID = :levelID");
 		$query->execute([':levelID' => $levelID]);
-		$udid = $query->fetchColumn();
+		$udid2 = $query->fetchColumn();
         //COMMANDS
         if(substr($comment,0,9) == '!featured' AND self::CheckPermission($udid)){
 			$isFeatured = $commentarray[1];
@@ -80,7 +80,7 @@ class Commands {
             $query = $db->prepare("UPDATE levels SET isDemon=:isDemon, stars=:stars, difficulty=:diff WHERE levelID=:levelID");
             $query->execute([':isDemon' => $isDemon, ':stars' => $stars, ':diff' => $diff, ':levelID' => $levelID]);
             $query = $db->prepare("UPDATE users SET cp = cp+$isCP WHERE udid=:udid");
-            $query->execute([':udid' => $udid]);
+            $query->execute([':udid' => $udid2]);
             echo $stars;
             
             return true;
