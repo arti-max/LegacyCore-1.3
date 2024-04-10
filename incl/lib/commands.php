@@ -48,7 +48,7 @@ class Commands {
             $isDemon = 0;
             $diff = 0;
             $isCP = 0;
-            if ($stars >= 1) {
+            if ($stars > 0) {
                 $isCP = 1;
             }
             switch ($stars) {
@@ -75,9 +75,14 @@ class Commands {
                     $diff = 50;
                     $isDemon = 1;
                     break;
+                default:
+                    $diff = 0;
+                    $isCP = 0;
+                    $stars = 0;
+                    break;
             }
 
-            $query = $db->prepare("UPDATE levels SET isDemon=:isDemon, stars=:stars, difficulty=:diff, diffOverride=:diff WHERE levelID=:levelID");
+            $query = $db->prepare("UPDATE levels SET isDemon=:isDemon, isStars=:stars, difficulty=:diff, diffOverride=:diff WHERE levelID=:levelID");
             $query->execute([':isDemon' => $isDemon, ':stars' => $stars, ':diff' => $diff, ':levelID' => $levelID]);
             $query = $db->prepare("UPDATE users SET cp = cp+$isCP WHERE udid=:udid");
             $query->execute([':udid' => $udid2]);
