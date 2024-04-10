@@ -75,7 +75,7 @@ class Commands {
                     $diff = 50;
                     $isDemon = 1;
                     break;
-                default:
+		case 0:
                     $diff = 0;
                     $isCP = 0;
                     $stars = 0;
