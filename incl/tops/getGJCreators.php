@@ -7,7 +7,7 @@ $type = $_POST["type"];
 
 $query = "SELECT * FROM users WHERE cp > 0 ORDER BY cp DESC LIMIT 50";
 $query = $db->prepare($query);
-$query->execute([':stars' => $stars]);
+//$query->execute([':stars' => $stars]);
 $result = $query->fetchAll();
 foreach($result as &$user){
 	$udid = $user["udid"];
