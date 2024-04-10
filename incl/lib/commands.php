@@ -77,7 +77,7 @@ class Commands {
                     break;
             }
 
-            $query = $db->prepare("UPDATE levels SET isDemon=:isDemon, stars=:stars, difficulty=:diff WHERE levelID=:levelID");
+            $query = $db->prepare("UPDATE levels SET isDemon=:isDemon, stars=:stars, difficulty=:diff, diffOverride=:diff WHERE levelID=:levelID");
             $query->execute([':isDemon' => $isDemon, ':stars' => $stars, ':diff' => $diff, ':levelID' => $levelID]);
             $query = $db->prepare("UPDATE users SET cp = cp+$isCP WHERE udid=:udid");
             $query->execute([':udid' => $udid2]);
