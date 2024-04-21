@@ -7,5 +7,5 @@ Admin commands (works in 1.1+ (!rate works in 1.3+); It works if isAdmin = 1):
 
 - !rate {stars}
   example:
-    !rate 5     =    [level has been rated for herd 5*]
+    !rate 5     =    [level has been rated for hard 5*]
 
