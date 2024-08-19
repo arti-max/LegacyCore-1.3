@@ -65,7 +65,7 @@ switch($diff){
 	default:
 		if($diff){
 			$diff = str_replace(",", "0,", $diff) . "0";
-			$params[] = "difficulty IN ($diff) AND isDemon = '0";
+			$params[] = "difficulty IN ($diff) AND isDemon = 0";
 		}
 		break;
 }
