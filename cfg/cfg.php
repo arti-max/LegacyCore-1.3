@@ -4,4 +4,5 @@ $port = 3306;
 $username = "root";
 $password = "";
 $dbname = "geometrydash";
+$VERSION = 1 // 1 - 1.0-1.3
 ?>
