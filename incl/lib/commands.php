@@ -1,58 +1,76 @@
 <?php
+
 class Commands {
-    public static function CheckPermission($udid) {
-        if(is_numeric($udid)) return false;
 
-		include __DIR__ . "/connection.php";
-		//isAdmin check
-		$query = $db->prepare("SELECT isAdmin FROM users WHERE udid = :udid");
-		$query->execute([':udid' => $udid]);
-		$isAdmin = $query->fetchColumn();
-		if($isAdmin == 1){
-			return 1;
-		}
-		
-		return false;
+    private static function getUserID($udid) {
+        include "connection.php";
+
+        $query = $db->prepare("SELECT userID FROM users WHERE udid=:udid");
+        $query->execute([':udid' => $udid]);
+        $userID = $query->fetchColumn();
+
+        return $userID;
+
     }
- 
-    public static function doCommands($udid, $comment, $levelID) {
 
-		include dirname(__FILE__)."/../lib/connection.php";
-		require_once "../lib/Lib.php";
-		$gs = new Lib();
+    private static function getRoleID($userID) {
+        include "connection.php";
 
-		$commentarray = explode(' ', $comment);
+        $query = $db->prepare("SELECT roleID FROM users WHERE userID=:userID");
+        $query->execute([':userID' => $userID]);
+        $roleID = $query->fetchColumn();
 
-        $query = $db->prepare("SELECT udid FROM levels WHERE levelID = :levelID");
-		$query->execute([':levelID' => $levelID]);
-		$udid2 = $query->fetchColumn();
-        //COMMANDS
-        if(substr($comment,0,9) == '!featured' AND self::CheckPermission($udid)){
-			$isFeatured = $commentarray[1];
-            $FeaturePOS = $commentarray[2];
+        return $roleID;
 
-            if ($isFeatured == "") {
-                $isFeatured = 0;
-            }
-            if ($FeaturePOS == "") {
-                $FeaturePOS = 0;
-            }
+    }
+    
+    private static function getCreatorID($levelID) {
+        include "connection.php";
 
-            $query = $db->prepare("UPDATE levels SET isFeatured=:isFeatured, F_POS=:F_POS WHERE levelID=:levelID");
-            $query->execute([':isFeatured' => $isFeatured, ':F_POS' => $FeaturePOS, ':levelID' => $levelID]);
+        $query = $db->prepare("SELECT userID FROM levels WHERE levelID=:levelID");
+        $query->execute([':levelID' => $levelID]);
+        $userID = $query->fetchColumn();
 
-            return true;
-        }
-        if (substr($comment,0,5) == '!rate' AND self::CheckPermission($udid)){
-            $stars = $commentarray[1];
+        return $userID;
+    }
+
+    private static function updateUserCP($userID, $cp) {
+        include "connection.php";
+
+        $query = $db->prepare("UPDATE users SET cp=cp+$cp WHERE userID=:userID");
+        $query->execute([':userID' => $userID]);
+
+    }
+
+    public static function command($udid, $comment, $levelID) {
+        include "connection.php";
+        require_once "roles.php";
+
+        $userID = self::getUserID($udid);
+        $roleID = self::getRoleID($userID);
+        $creatorID = self::getCreatorID($levelID);
+        echo "$userID::$roleID::$creatorID";
+
+        $commentarr = explode(' ', $comment);
+
+        if(substr($comment,0,5) == "!rate" and Roles::getPermissions($roleID, 'setStars')) {
+            $stars = $commentarr[1];
             $isDemon = 0;
+            $CP = -1;
             $diff = 0;
-            $isCP = 0;
-            if ($stars > 0) {
-                $isCP = 1;
-            }
+            $stars > 0 ? $CP = 1 : $CP = -1;
+
             switch ($stars) {
+                case 0:
+                    $CP = -1;
+                    break;
                 case 1:
+                    if ($VERSION > 1) {
+                        $diff = 60;
+                    } else {
+                        $diff = 10;
+                    }
+                    break;
                 case 2:
                     $diff = 10;
                     break;
@@ -74,26 +92,48 @@ class Commands {
                 case 10:
                     $diff = 50;
                     $isDemon = 1;
-                    break;
-		case 0:
-                    $diff = 0;
-                    $isCP = 0;
-                    $stars = 0;
-                    break;
             }
 
-            $query = $db->prepare("UPDATE levels SET isDemon=:isDemon, isStars=:stars, difficulty=:diff, diffOverride=:diff WHERE levelID=:levelID");
-            $query->execute([':isDemon' => $isDemon, ':stars' => $stars, ':diff' => $diff, ':levelID' => $levelID]);
-            $query = $db->prepare("UPDATE users SET cp = cp+$isCP WHERE udid=:udid");
-            $query->execute([':udid' => $udid2]);
-            echo $stars;
-            
+            $query = $db->prepare("UPDATE levels SET isStars=:stars, difficulty=:diff, isDemon=:demon, diffOverride=:diff WHERE levelID=:levelID");
+            $query->execute([':levelID' => $levelID, ':stars' => $stars, ':diff' => $diff, ':demon' => $isDemon]);
+            self::updateUserCP($creatorID, $CP);
+
             return true;
         }
+
+        if (substr($comment,0,4) == "!req" and Roles::getPermissions($roleID, 'req')) {
+            $stars = $commentarr[1];
+
+            $query = $db->prepare("UPDATE levels SET reqStars=:stars WHERE levelID=:levelID");
+            $query->execute([':stars' => $stars, ':levelID' => $levelID]);
+
+            return true;
+        }
+
+        if (substr($comment, 0, 9) == "!unlisted" and Roles::getPermissions($roleID, 'unlisted') and $userID == $creatorID) {
+
+            $query = $db->prepare("UPDATE levels SET unlisted=1 WHERE levelID=:levelID");
+            $query->execute([':levelID' => $levelID]);
+
+            return true;
+
+        }
+
+        if (substr($comment, 0, 9) == "!inlisted" and Roles::getPermissions($roleID, 'inlisted') and $userID == $creatorID) {
+
+            $query = $db->prepare("UPDATE levels SET unlisted=0 WHERE levelID=:levelID");
+            $query->execute([':levelID' => $levelID]);
+
+            return true;
+
+        }
+
+
+
         return false;
+
+
     }
 
 
 }
-
-?>
