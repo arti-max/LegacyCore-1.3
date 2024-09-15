@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.5deb2
+-- version 5.2.1deb3
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Фев 28 2024 г., 21:51
--- Версия сервера: 8.0.36-0ubuntu0.20.04.1
--- Версия PHP: 7.4.3-4ubuntu2.19
+-- Время создания: Сен 15 2024 г., 08:57
+-- Версия сервера: 8.0.39-0ubuntu0.22.04.1
+-- Версия PHP: 8.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `LegacyCore`
+-- База данных: `gdps`
 --
 
 -- --------------------------------------------------------
@@ -58,10 +57,6 @@ CREATE TABLE `comments` (
   `comment` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Дамп данных таблицы `comments`
---
-
 -- --------------------------------------------------------
 
 --
@@ -73,10 +68,6 @@ CREATE TABLE `downloads` (
   `levelID` int NOT NULL,
   `uploadDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `downloads`
---
 
 -- --------------------------------------------------------
 
@@ -105,12 +96,11 @@ CREATE TABLE `levels` (
   `uploadDate` bigint NOT NULL,
   `diffOverride` int DEFAULT '0',
   `isStars` int NOT NULL DEFAULT '0',
-  `isDemon` int NOT NULL DEFAULT '0'
+  `isDemon` int NOT NULL DEFAULT '0',
+  `unlisted` int NOT NULL DEFAULT '0',
+  `objects` int NOT NULL DEFAULT '0',
+  `reqStars` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `levels`
---
 
 -- --------------------------------------------------------
 
@@ -122,13 +112,21 @@ CREATE TABLE `likes` (
   `id` int NOT NULL,
   `levelID` int NOT NULL,
   `uploadDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `type` int NOT NULL,
-  `isLike` tinyint NOT NULL
+  `type` int NOT NULL DEFAULT '0',
+  `isLike` tinyint NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
+
 --
--- Дамп данных таблицы `likes`
+-- Структура таблицы `roles`
 --
+
+CREATE TABLE `roles` (
+  `roleID` int NOT NULL,
+  `name` varchar(20) NOT NULL DEFAULT 'player',
+  `permissions` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -149,12 +147,10 @@ CREATE TABLE `users` (
   `icon` int NOT NULL DEFAULT '0',
   `ship` int NOT NULL DEFAULT '0',
   `color1` int NOT NULL DEFAULT '0',
-  `color2` int NOT NULL DEFAULT '0'
+  `color2` int NOT NULL DEFAULT '0',
+  `features` int NOT NULL DEFAULT '0',
+  `roleID` int NOT NULL DEFAULT '0' COMMENT 'roles->roleID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `users`
---
 
 --
 -- Индексы сохранённых таблиц
@@ -195,6 +191,12 @@ ALTER TABLE `likes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`roleID`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -208,37 +210,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `commentID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `downloads`
 --
 ALTER TABLE `downloads`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `levelID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `roleID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `userID` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
